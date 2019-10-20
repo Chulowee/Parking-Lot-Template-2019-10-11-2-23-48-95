@@ -3,6 +3,8 @@ package com.thoughtworks.parking_lot.controller;
 import com.thoughtworks.parking_lot.model.ParkingLot;
 import com.thoughtworks.parking_lot.service.ParkingLotService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -36,5 +38,13 @@ public class ParkingLotContoller {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @GetMapping(produces = APPLICATION_JSON_VALUE)
+    @ResponseStatus(code = HttpStatus.OK)
+    public Iterable<ParkingLot> listOfParkingLots(
+            @RequestParam(required = false , defaultValue = "0")  Integer page ,
+            @RequestParam(required = false , defaultValue = "15")Integer size ) {
+        return parkingLotService.findAll(PageRequest.of(page,size, Sort.by("name").ascending()));
     }
 }
