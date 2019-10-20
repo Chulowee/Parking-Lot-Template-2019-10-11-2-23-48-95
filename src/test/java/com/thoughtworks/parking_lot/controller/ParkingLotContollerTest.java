@@ -85,6 +85,20 @@ class ParkingLotControllerTest {
                 .andDo(print());
     }
 
+    @Test
+    void should_patch_parkingLot() throws Exception{
+        when(parkingLotService.findByNameContaining("ParkingLot")).thenReturn(Optional.of(dummyParkingLot()));
+
+        ResultActions result = mvc.perform(patch("/parkingLot/ParkingLot?capacity=5", dummyParkingLot())
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(dummyParkingLot())));
+
+        result.andExpect(status().isOk())
+                .andDo(print());
+    }
+
+
+
     private ParkingLot dummyParkingLot() {
         ParkingLot parkingLot = new ParkingLot();
         parkingLot.setName("ParkingLot");

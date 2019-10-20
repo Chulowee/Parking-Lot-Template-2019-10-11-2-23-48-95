@@ -56,4 +56,16 @@ public class ParkingLotContoller {
         }
         return new ResponseEntity<>(HttpStatus.OK);
     }
+
+    @PatchMapping(value = "/{name}")
+    public HttpEntity patchParkingLot(@PathVariable String name, @RequestParam int capacity){
+        Optional<ParkingLot> parkingLot = parkingLotService.findByNameContaining(name);
+        if (isNull(parkingLot)){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        ParkingLot modifyParkingLot = parkingLot.get();
+        modifyParkingLot.setCapacity(capacity);
+        parkingLotService.save(modifyParkingLot);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 }
