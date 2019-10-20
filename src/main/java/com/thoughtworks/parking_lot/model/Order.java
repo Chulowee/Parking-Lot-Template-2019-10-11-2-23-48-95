@@ -13,7 +13,7 @@ public class Order {
     private Long id;
 
     private int orderNumber;
-    private ParkingLot parkingLotName;
+    private String parkingLotName;
     private String plateNumber;
     private String creationTime;
     private String closeTime;
@@ -36,11 +36,11 @@ public class Order {
         this.orderNumber = orderNumber;
     }
 
-    public ParkingLot getParkingLotName() {
+    public String getParkingLotName() {
         return parkingLotName;
     }
 
-    public void setParkingLotName(ParkingLot parkingLotName) {
+    public void setParkingLotName(String parkingLotName) {
         this.parkingLotName = parkingLotName;
     }
 

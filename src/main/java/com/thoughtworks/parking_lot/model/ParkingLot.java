@@ -16,6 +16,10 @@ public class ParkingLot {
     private int capacity;
     private String location;
 
+    public String getName() {
+        return name;
+    }
+
     public Long getId() {
         return id;
     }
