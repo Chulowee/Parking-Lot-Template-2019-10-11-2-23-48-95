@@ -16,9 +16,12 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
+import java.util.Optional;
+
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -47,6 +50,18 @@ class OrderControllerTest {
                 .content(objectMapper.writeValueAsString(order)));
 
         result.andExpect(status().isCreated())
+                .andDo(print());
+    }
+
+    @Test
+    void should_patch_parkingLot() throws Exception{
+        when(orderService.findByNameContaining("UHHG123")).thenReturn(Optional.of(dummyOrder()));
+
+        ResultActions result = mvc.perform(patch("/parkingLot/Sample/order/UHHG123", dummyOrder())
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(dummyOrder())));
+
+        result.andExpect(status().isOk())
                 .andDo(print());
     }
 
