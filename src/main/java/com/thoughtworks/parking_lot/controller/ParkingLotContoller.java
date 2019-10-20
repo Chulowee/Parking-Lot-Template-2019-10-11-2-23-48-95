@@ -47,4 +47,13 @@ public class ParkingLotContoller {
             @RequestParam(required = false , defaultValue = "15")Integer size ) {
         return parkingLotService.findAll(PageRequest.of(page,size, Sort.by("name").ascending()));
     }
+
+    @GetMapping(value = "/{name}")
+    public HttpEntity getParkingLot(@PathVariable String name){
+        Optional<ParkingLot> parkingLot = parkingLotService.findByNameContaining(name);
+        if (isNull(parkingLot)){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 }

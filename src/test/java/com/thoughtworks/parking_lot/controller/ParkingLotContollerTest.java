@@ -65,11 +65,21 @@ class ParkingLotControllerTest {
     }
 
     @Test
-    void shoud_return_parkingLot_list() throws Exception {
+    void shoud_get_parkingLot_list() throws Exception {
         when(parkingLotService.findAll(new PageRequest(0,15)))
                 .thenReturn(Collections.singleton(new ParkingLot()));
 
         ResultActions result = mvc.perform(get("/parkingLot?page=0&pagesize=15"));
+
+        result.andExpect(status().isOk())
+                .andDo(print());
+    }
+
+    @Test
+    void should_get_parkingLot() throws Exception{
+        when(parkingLotService.findByNameContaining("ParkingLot")).thenReturn(Optional.of(dummyParkingLot()));
+
+        ResultActions result = mvc.perform(get("/parkingLot/ParkingLot"));
 
         result.andExpect(status().isOk())
                 .andDo(print());
