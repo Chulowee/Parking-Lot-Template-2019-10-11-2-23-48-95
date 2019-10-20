@@ -14,8 +14,11 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
+import java.util.Optional;
+
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -48,9 +51,21 @@ class ParkingLotControllerTest {
                 .andDo(print());
     }
 
+    @Test
+    void should_delete_parking_lot() throws Exception {
+        ParkingLot parkingLot = dummyParkingLot();
+
+        when(parkingLotService.findByNameContaining("ParkingLot")).thenReturn(Optional.of(parkingLot));
+        //when
+        ResultActions result = mvc.perform(delete("/parkingLot/ParkingLot"));
+        //then
+        result.andExpect(status().isOk())
+                .andDo(print());
+    }
+
     private ParkingLot dummyParkingLot() {
         ParkingLot parkingLot = new ParkingLot();
-        parkingLot.setName("Sample ParkingLot");
+        parkingLot.setName("ParkingLot");
         parkingLot.setCapacity(10);
         parkingLot.setLocation("Sample Location");
 
