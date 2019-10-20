@@ -1,7 +1,9 @@
 package com.thoughtworks.parking_lot.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.thoughtworks.parking_lot.model.Order;
 import com.thoughtworks.parking_lot.model.ParkingLot;
+import com.thoughtworks.parking_lot.service.OrderService;
 import com.thoughtworks.parking_lot.service.ParkingLotService;
 import org.h2.store.Page;
 import org.junit.jupiter.api.Test;
@@ -19,7 +21,6 @@ import org.springframework.test.web.servlet.ResultActions;
 import java.util.Collections;
 import java.util.Optional;
 
-import static java.util.Collections.singleton;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -56,7 +57,7 @@ class ParkingLotControllerTest {
 
     @Test
     void should_delete_parking_lot() throws Exception {
-        when(parkingLotService.findByNameContaining("ParkingLot")).thenReturn(Optional.of(dummyParkingLot()));
+        when(parkingLotService.findByNameContaining("ParkingLot")).thenReturn(dummyParkingLot());
 
         ResultActions result = mvc.perform(delete("/parkingLot/ParkingLot"));
 
@@ -77,7 +78,7 @@ class ParkingLotControllerTest {
 
     @Test
     void should_get_parkingLot() throws Exception{
-        when(parkingLotService.findByNameContaining("ParkingLot")).thenReturn(Optional.of(dummyParkingLot()));
+        when(parkingLotService.findByNameContaining("ParkingLot")).thenReturn(dummyParkingLot());
 
         ResultActions result = mvc.perform(get("/parkingLot/ParkingLot"));
 
@@ -87,7 +88,7 @@ class ParkingLotControllerTest {
 
     @Test
     void should_patch_parkingLot() throws Exception{
-        when(parkingLotService.findByNameContaining("ParkingLot")).thenReturn(Optional.of(dummyParkingLot()));
+        when(parkingLotService.findByNameContaining("ParkingLot")).thenReturn(dummyParkingLot());
 
         ResultActions result = mvc.perform(patch("/parkingLot/ParkingLot?capacity=5", dummyParkingLot())
                 .contentType(MediaType.APPLICATION_JSON)
@@ -97,8 +98,6 @@ class ParkingLotControllerTest {
                 .andDo(print());
     }
 
-
-
     private ParkingLot dummyParkingLot() {
         ParkingLot parkingLot = new ParkingLot();
         parkingLot.setName("ParkingLot");
@@ -107,4 +106,5 @@ class ParkingLotControllerTest {
 
         return parkingLot;
     }
+
 }

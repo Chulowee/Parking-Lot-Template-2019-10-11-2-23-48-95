@@ -33,7 +33,7 @@ public class ParkingLotContoller {
 
     @DeleteMapping(value = "/{name}", produces = APPLICATION_JSON_VALUE)
     public HttpEntity deleteParkingLot(@PathVariable String name){
-        Optional<ParkingLot> isDeleted = parkingLotService.findByNameContaining(name);
+        ParkingLot isDeleted = parkingLotService.findByNameContaining(name);
         if (isNull(isDeleted)){
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
@@ -50,7 +50,7 @@ public class ParkingLotContoller {
 
     @GetMapping(value = "/{name}")
     public HttpEntity getParkingLot(@PathVariable String name){
-        Optional<ParkingLot> parkingLot = parkingLotService.findByNameContaining(name);
+        ParkingLot parkingLot = parkingLotService.findByNameContaining(name);
         if (isNull(parkingLot)){
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
@@ -59,11 +59,11 @@ public class ParkingLotContoller {
 
     @PatchMapping(value = "/{name}")
     public HttpEntity patchParkingLot(@PathVariable String name, @RequestParam int capacity){
-        Optional<ParkingLot> parkingLot = parkingLotService.findByNameContaining(name);
+        ParkingLot parkingLot = parkingLotService.findByNameContaining(name);
         if (isNull(parkingLot)){
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        ParkingLot modifyParkingLot = parkingLot.get();
+        ParkingLot modifyParkingLot = parkingLot;
         modifyParkingLot.setCapacity(capacity);
         parkingLotService.save(modifyParkingLot);
         return new ResponseEntity<>(HttpStatus.OK);

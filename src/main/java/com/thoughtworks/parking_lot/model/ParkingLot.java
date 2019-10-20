@@ -13,7 +13,12 @@ public class ParkingLot {
     private Long id;
 
     private String name;
+
     private int capacity;
+
+    public int getCapacity() {
+        return capacity;
+    }
     private String location;
 
     public String getName() {

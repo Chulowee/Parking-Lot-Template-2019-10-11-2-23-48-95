@@ -17,7 +17,7 @@ public class ParkingLotService {
         return parkingLotRepository.save(parkingLot);
     }
 
-    public Optional<ParkingLot> findByNameContaining(String name) {
+    public ParkingLot findByNameContaining(String name) {
         return parkingLotRepository.findByNameContaining(name);
     }
 
