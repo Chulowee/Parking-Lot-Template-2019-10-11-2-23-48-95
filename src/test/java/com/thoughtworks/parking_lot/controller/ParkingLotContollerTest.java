@@ -1,11 +1,8 @@
 package com.thoughtworks.parking_lot.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.thoughtworks.parking_lot.model.Order;
 import com.thoughtworks.parking_lot.model.ParkingLot;
-import com.thoughtworks.parking_lot.service.OrderService;
 import com.thoughtworks.parking_lot.service.ParkingLotService;
-import org.h2.store.Page;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +16,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
 import java.util.Collections;
-import java.util.Optional;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
@@ -28,7 +24,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @ExtendWith(SpringExtension.class)
-@WebMvcTest(ParkingLotContoller.class)
+@WebMvcTest(ParkingLotController.class)
 @ActiveProfiles(profiles = "test")
 class ParkingLotControllerTest {
 
@@ -47,7 +43,7 @@ class ParkingLotControllerTest {
 
         when(parkingLotService.save(any())).thenReturn(parkingLot);
 
-        ResultActions result = mvc.perform(post( "/parkingLot")
+        ResultActions result = mvc.perform(post("/parkingLot")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(parkingLot)));
 
@@ -67,7 +63,7 @@ class ParkingLotControllerTest {
 
     @Test
     void shoud_get_parkingLot_list() throws Exception {
-        when(parkingLotService.findAll(new PageRequest(0,15)))
+        when(parkingLotService.findAll(new PageRequest(0, 15)))
                 .thenReturn(Collections.singleton(new ParkingLot()));
 
         ResultActions result = mvc.perform(get("/parkingLot?page=0&pagesize=15"));
@@ -77,7 +73,7 @@ class ParkingLotControllerTest {
     }
 
     @Test
-    void should_get_parkingLot() throws Exception{
+    void should_get_parkingLot() throws Exception {
         when(parkingLotService.findByNameContaining("ParkingLot")).thenReturn(dummyParkingLot());
 
         ResultActions result = mvc.perform(get("/parkingLot/ParkingLot"));
@@ -87,7 +83,7 @@ class ParkingLotControllerTest {
     }
 
     @Test
-    void should_patch_parkingLot() throws Exception{
+    void should_patch_parkingLot() throws Exception {
         when(parkingLotService.findByNameContaining("ParkingLot")).thenReturn(dummyParkingLot());
 
         ResultActions result = mvc.perform(patch("/parkingLot/ParkingLot?capacity=5", dummyParkingLot())

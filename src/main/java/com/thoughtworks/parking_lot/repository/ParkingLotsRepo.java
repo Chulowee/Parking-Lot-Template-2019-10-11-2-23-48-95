@@ -4,8 +4,6 @@ import com.thoughtworks.parking_lot.model.ParkingLot;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import java.util.Optional;
-
 @Repository
 public interface ParkingLotsRepo extends JpaRepository<ParkingLot, Long> {
     ParkingLot findByNameContaining(String name) ;

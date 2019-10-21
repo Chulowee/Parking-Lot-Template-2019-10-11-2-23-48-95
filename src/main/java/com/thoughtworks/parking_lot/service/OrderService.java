@@ -1,6 +1,6 @@
 package com.thoughtworks.parking_lot.service;
 
-import com.thoughtworks.parking_lot.model.Order;
+import com.thoughtworks.parking_lot.model.ParkingOrder;
 import com.thoughtworks.parking_lot.model.ParkingLot;
 import com.thoughtworks.parking_lot.repository.OrderRepo;
 import com.thoughtworks.parking_lot.repository.ParkingLotsRepo;
@@ -21,7 +21,7 @@ public class OrderService {
     private ParkingLotsRepo parkingLotRepository;
 
     private static final String OPEN_STATUS = "Open";
-    public Order createOrder(String name, String plateNumber) {
+    public ParkingOrder createOrder(String name, String plateNumber) {
         ParkingLot parkingLot = parkingLotRepository.findByNameContaining(name);
             if (parkingLot.getCapacity() == 0) {
                 return null;
@@ -36,31 +36,31 @@ public class OrderService {
         parkingLotRepository.save(parkingLot);
     }
 
-    private Order buildOrder(String name, String plateNumber) {
-        Order order = new Order();
-        order.setOrderNumber(UUID.randomUUID().toString());
-        order.setParkingLotName(name);
-        order.setPlateNumber(plateNumber);
-        order.setCreationTime(String.valueOf(System.currentTimeMillis()));
-        order.setOrderStatus(OPEN_STATUS);
-        order.setCloseTime(null);
+    private ParkingOrder buildOrder(String name, String plateNumber) {
+        ParkingOrder parkingOrder = new ParkingOrder();
+        parkingOrder.setOrderNumber(UUID.randomUUID().toString());
+        parkingOrder.setParkingLotName(name);
+        parkingOrder.setPlateNumber(plateNumber);
+        parkingOrder.setCreationTime(String.valueOf(System.currentTimeMillis()));
+        parkingOrder.setOrderStatus(OPEN_STATUS);
+        parkingOrder.setCloseTime(null);
 
-        return order;
+        return parkingOrder;
     }
 
     public ParkingLot findByNameContaining(String name) {
         return parkingLotRepository.findByNameContaining(name);
     }
 
-    public Order updateOrder(String name) {
-        Optional<Order> order = orderRepository.findByNameContaining(name);
+    public ParkingOrder updateOrder(String name) {
+        Optional<ParkingOrder> order = orderRepository.findByPlateNumber(name);
         if (isNull(order)){
             return null;
         }
-        Order modifyOrder = order.get();
-        modifyOrder.setCloseTime("capacity");
-        modifyOrder.setOrderStatus("Closed");
-        orderRepository.save(modifyOrder);
-        return modifyOrder;
+        ParkingOrder modifyParkingOrder = order.get();
+        modifyParkingOrder.setCloseTime("capacity");
+        modifyParkingOrder.setOrderStatus("Closed");
+        orderRepository.save(modifyParkingOrder);
+        return modifyParkingOrder;
     }
 }

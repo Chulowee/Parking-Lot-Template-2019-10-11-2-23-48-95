@@ -1,10 +1,8 @@
 package com.thoughtworks.parking_lot.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.thoughtworks.parking_lot.model.Order;
-import com.thoughtworks.parking_lot.model.ParkingLot;
+import com.thoughtworks.parking_lot.model.ParkingOrder;
 import com.thoughtworks.parking_lot.service.OrderService;
-import com.thoughtworks.parking_lot.service.ParkingLotService;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -17,11 +15,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
-import java.util.Optional;
-
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -32,7 +26,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ExtendWith(SpringExtension.class)
 @WebMvcTest(OrderController.class)
 @ActiveProfiles(profiles = "test")
-class OrderControllerTest {
+class ParkingOrderControllerTest {
     @MockBean
     private OrderService orderService;
 
@@ -44,13 +38,13 @@ class OrderControllerTest {
 
     @Test
     void should_save_order_by_name() throws Exception {
-        Order order = dummyOrder();
+        ParkingOrder parkingOrder = dummyOrder();
 
-        when(orderService.createOrder(any(),any())).thenReturn(order);
+        when(orderService.createOrder(any(),any())).thenReturn(parkingOrder);
 
         ResultActions result = mvc.perform(post("/parkingLot/Sample/order")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(order)));
+                .content(objectMapper.writeValueAsString(parkingOrder)));
 
         result.andExpect(status().isCreated())
                 .andDo(print());
@@ -70,26 +64,26 @@ class OrderControllerTest {
 
     @Test
     void should_fail_creation() throws Exception {
-        Order order = dummyOrder();
+        ParkingOrder parkingOrder = dummyOrder();
 
         when(orderService.createOrder(any(), any())).thenReturn(null);
 
         ResultActions result = mvc.perform(post("/parkingLot/Sample/order")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(order)));
+                .content(objectMapper.writeValueAsString(parkingOrder)));
 
         result.andExpect(status().isBadRequest())
                 .andDo(print())
                 .andExpect(jsonPath("$", Matchers.is("The parking lot is full!")));
     }
-    private Order dummyOrder() {
-        Order order = new Order();
-        order.setOrderNumber("1");
-        order.setPlateNumber("ABC123");
-        order.setCreationTime("2000-01-01");
-        order.setCloseTime("2000-01-02");
-        order.setOrderStatus("Open");
+    private ParkingOrder dummyOrder() {
+        ParkingOrder parkingOrder = new ParkingOrder();
+        parkingOrder.setOrderNumber("1");
+        parkingOrder.setPlateNumber("ABC123");
+        parkingOrder.setCreationTime("2000-01-01");
+        parkingOrder.setCloseTime("2000-01-02");
+        parkingOrder.setOrderStatus("Open");
 
-        return order;
+        return parkingOrder;
     }
 }

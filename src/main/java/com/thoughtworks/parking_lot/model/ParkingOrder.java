@@ -1,15 +1,15 @@
 package com.thoughtworks.parking_lot.model;
 
-import org.springframework.data.annotation.Id;
-
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
+import javax.persistence.Id;
 
 @Entity
-public class Order {
+public class ParkingOrder {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private String orderNumber;
     private String parkingLotName;
     private String plateNumber;
